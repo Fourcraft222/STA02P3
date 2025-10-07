@@ -1,3 +1,87 @@
+// Utilidad para mapear datos de la API al formato esperado
+function mapApiMovie(apiMovie) {
+  const mapping = {
+    "El Padrino": {
+      genre: "Drama",
+      rating: 9.2,
+      duration: "175 min",
+      director: "Francis Ford Coppola",
+      description: "La historia de la familia Corleone bajo el patriarcado de Don Vito Corleone, centrándose en la transformación de su hijo menor, Michael, de reacio forastero a despiadado jefe de la mafia.",
+      poster: "🎭",
+      featured: true
+    },
+    "Pulp Fiction": {
+      genre: "Crimen",
+      rating: 8.9,
+      duration: "154 min",
+      director: "Quentin Tarantino",
+      description: "Las vidas de dos sicarios de la mafia, un boxeador, un gángster y su esposa, y un par de bandidos de cafetería se entrelazan en cuatro historias de violencia y redención.",
+      poster: "🔫",
+      featured: true
+    },
+    "El Señor de los Anillos": {
+      genre: "Fantasía",
+      rating: 8.8,
+      duration: "178 min",
+      director: "Peter Jackson",
+      description: "Un hobbit humilde se embarca en una épica aventura para destruir el Anillo Único y salvar la Tierra Media del Señor Oscuro Sauron.",
+      poster: "💍",
+      featured: false
+    },
+    "Forrest Gump": {
+      genre: "Drama",
+      rating: 8.8,
+      duration: "142 min",
+      director: "Robert Zemeckis",
+      description: "Las presidencias de Kennedy y Johnson, Vietnam, Watergate y otros eventos históricos se desarrollan desde la perspectiva de un hombre de Alabama con un coeficiente intelectual de 75.",
+      poster: "🏃",
+      featured: false
+    },
+    "Inception": {
+      genre: "Ciencia Ficción",
+      rating: 8.7,
+      duration: "148 min",
+      director: "Christopher Nolan",
+      description: "Un ladrón que roba secretos corporativos a través del uso de la tecnología de compartir sueños recibe la tarea inversa de plantar una idea en la mente de un CEO.",
+      poster: "🌀",
+      featured: true
+    },
+    "Matrix": {
+      genre: "Ciencia Ficción",
+      rating: 8.7,
+      duration: "136 min",
+      director: "Lana Wachowski",
+      description: "Un hacker informático aprende de misteriosos rebeldes sobre la verdadera naturaleza de su realidad y su papel en la guerra contra sus controladores.",
+      poster: "💊",
+      featured: false
+    },
+    "Interstellar": {
+      genre: "Ciencia Ficción",
+      rating: 8.6,
+      duration: "169 min",
+      director: "Christopher Nolan",
+      description: "Un equipo de exploradores viaja a través de un agujero de gusano en el espacio en un intento de asegurar la supervivencia de la humanidad.",
+      poster: "🚀",
+      featured: true
+    },
+    "Gladiator": {
+      genre: "Acción",
+      rating: 8.5,
+      duration: "155 min",
+      director: "Ridley Scott",
+      description: "Un ex-general romano busca venganza contra el emperador corrupto que asesinó a su familia y lo envió a la esclavitud.",
+      poster: "⚔️",
+      featured: false
+    }
+  }
+  const extra = mapping[apiMovie.name] || {}
+  return {
+    id: apiMovie.id,
+    title: apiMovie.name,
+    year: apiMovie.year,
+    ...extra
+  }
+}
 import { useState, useEffect } from 'react'
 
 // Datos simulados de películas
@@ -106,12 +190,34 @@ function MovieCatalog({ onMovieSelect, favorites, onAddToFavorites }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedGenre, setSelectedGenre] = useState('all')
   const [sortBy, setSortBy] = useState('title')
+  const [error, setError] = useState("")
 
-  useEffect(() => {
-    // Simular carga de datos
-    setMovies(moviesData)
-    setFilteredMovies(moviesData)
-  }, [])
+    useEffect(() => {
+      // Obtener películas desde la API
+      fetch('http://localhost:3000/movies')
+        .then(res => {
+          if (!res.ok) throw new Error('Error al conectar con la API')
+          return res.json()
+        })
+        .then(data => {
+          if (!Array.isArray(data) || data.length === 0) {
+            setError('No se encontraron películas en la API')
+            setMovies([])
+            setFilteredMovies([])
+          } else {
+            // Mapear datos de la API al formato esperado
+            const mapped = data.map(mapApiMovie)
+            setMovies(mapped)
+            setFilteredMovies(mapped)
+            setError("")
+          }
+        })
+        .catch((err) => {
+          setError('Error al obtener películas: ' + err.message)
+          setMovies([])
+          setFilteredMovies([])
+        })
+    }, [])
 
   useEffect(() => {
     let filtered = movies.filter(movie => 
@@ -144,6 +250,11 @@ function MovieCatalog({ onMovieSelect, favorites, onAddToFavorites }) {
 
   return (
     <div className="movie-catalog">
+      {error && (
+        <div style={{color: 'red', margin: '20px 0', fontWeight: 'bold'}}>
+          {error}
+        </div>
+      )}
       {/* Sección destacada */}
       <section className="featured-section">
         <h2>🔥 Películas Destacadas</h2>
