@@ -7,12 +7,12 @@ function MovieDetails({ movie, onBack, onAddToFavorites, isFavorite }) {
   useEffect(() => {
     if (!movie?.id) return
     // Obtener datos completos de la película
-    fetch(`http://localhost:3000/movies/${movie.id}`)
+    fetch(`http://localhost:3001/movies/${movie.id}`)
       .then(res => res.json())
       .then(data => {
         setApiMovie(data)
         // Obtener actores
-        fetch('http://localhost:3000/actors')
+        fetch('http://localhost:3001/actors')
           .then(res => res.json())
           .then(allActors => {
             const movieActors = (data.actors || []).map(aid => allActors.find(a => a.id === aid)).filter(Boolean)
@@ -31,12 +31,18 @@ function MovieDetails({ movie, onBack, onAddToFavorites, isFavorite }) {
     )
   }
 
-  // Usar los datos mapeados si existen, si no usar los props
+  // Usar los datos de la API directamente
   const details = apiMovie ? {
     ...movie,
-    ...apiMovie,
-    // Puedes mapear más campos si lo necesitas
-  } : movie
+    title: apiMovie.name || movie.name || 'Título no disponible',
+    name: apiMovie.name || movie.name || 'Título no disponible',
+    year: apiMovie.year || movie.year || 'Año no disponible',
+    actors: apiMovie.actors || []
+  } : {
+    ...movie,
+    title: movie.name || movie.title || 'Título no disponible',
+    name: movie.name || movie.title || 'Título no disponible'
+  }
 
   return (
     <div className="movie-details">
@@ -51,14 +57,14 @@ function MovieDetails({ movie, onBack, onAddToFavorites, isFavorite }) {
           <h1>{details.title}</h1>
           <div className="movie-meta-detail">
             <span className="year">{details.year}</span>
-            <span className="duration">{details.duration}</span>
-            <span className="rating">⭐ {details.rating}/10</span>
+            <span className="duration">{details.duration || 'Duración no disponible'}</span>
+            <span className="rating">⭐ {details.rating || 'N/A'}/10</span>
           </div>
           <div className="movie-genre-detail">
-            <span className="genre-tag">{details.genre}</span>
+            <span className="genre-tag">{details.genre || 'Sin género'}</span>
           </div>
           <p className="director">
-            <strong>Director:</strong> {details.director}
+            <strong>Director:</strong> {details.director || 'Director no disponible'}
           </p>
           <div className="movie-actions-detail">
             <button className="btn-play">

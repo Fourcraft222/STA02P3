@@ -59,6 +59,15 @@ app.delete('/movies/:id', (req, res) => {
 
 /* ==== ACTORS ==== */
 
+// GET /actors - List all actors
+app.get('/actors', (req, res) => res.json(read('actors')));
+
+// GET /actors/:id - Get an actor by ID
+app.get('/actors/:id', (req, res) => {
+  const actor = read('actors').find(a => a.id === req.params.id);
+  actor ? res.json(actor) : res.sendStatus(404);
+});
+
 // POST /actors - Create a new actor
 app.post('/actors', (req, res) => {
   const actors = read('actors');
@@ -98,4 +107,4 @@ app.delete('/actors/:id', (req, res) => {
 });
 
 
-app.listen(3000, () => console.log('API lista en http://localhost:3000'));
+app.listen(3001, () => console.log('API lista en http://localhost:3001'));
