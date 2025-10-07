@@ -1,0 +1,25 @@
+{
+  "name": "sta02p2",
+  "version": "1.0.0",
+  "description": "Holi somo sta02 (pablito y gaby)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fourcraft222/STA02P2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fourcraft222/STA02P2/issues"
+  },
+  "homepage": "https://github.com/Fourcraft222/STA02P2#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "uuid": "^13.0.0"
+  }
+}
