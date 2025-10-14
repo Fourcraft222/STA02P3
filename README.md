@@ -1,6 +1,53 @@
-# Práctica 03 - Frameworks de Front-End
+# Práctica 03 - Frameworks de Front-En## 🚀 Instalación y Uso
 
-🍿 **CineFlix** - Catálogo de películas estilo Netflix desarrollado con React y Vite
+### Prerrequisitos
+- Node.js 18+ 
+- npm o yarn
+
+### Instalación
+```bash
+# Clonar o descargar el proyecto
+# Navegar al directorio del proyecto
+
+# Instalar dependencias
+npm install
+```
+
+### 🏃 Ejecución - ¡TODO EN UNO! 
+```bash
+# 🎯 Ejecutar COMPLETO (Frontend + API simultáneamente)
+npm run dev
+
+# ¡Con UN SOLO COMANDO se inician:
+# ✅ React Frontend en http://localhost:3000
+# ✅ API Backend en http://localhost:3001
+```
+
+### 📋 Scripts Disponibles
+
+```bash
+# 🚀 Desarrollo completo (Frontend + API)
+npm run dev
+
+# 🎨 Solo Frontend (React + Vite)
+npm run dev:frontend-only
+
+# 🔌 Solo API Backend 
+npm run dev:api-only
+
+# 🏗️ Construir para producción
+npm run build
+
+# 🧹 Linter
+npm run lint
+
+# 👀 Vista previa de build
+npm run preview
+```
+
+### � URLs del Proyecto
+- **Frontend**: http://localhost:3000
+- **API**: http://localhost:3001Flix** - Catálogo de películas estilo Netflix desarrollado con React y Vite
 
 ## 🎬 Descripción del Proyecto
 
